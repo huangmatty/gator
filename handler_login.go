@@ -23,6 +23,6 @@ func handlerLogin(s *state, cmd command) error {
 	if err := s.cfg.SetUser(name); err != nil {
 		return fmt.Errorf("unable to set current user: %w", err)
 	}
-	fmt.Printf("successfully set user -- %s\n", name)
+	fmt.Printf("successfully set user \"%s\"\n", name)
 	return nil
 }
