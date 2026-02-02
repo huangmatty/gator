@@ -1,14 +1,19 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/huangmatty/gator/internal/config"
+	"github.com/huangmatty/gator/internal/database"
+	_ "github.com/lib/pq"
 )
 
 type state struct {
-	config *config.Config
+	db  *database.Queries
+	cfg *config.Config
 }
 
 func main() {
@@ -17,13 +22,21 @@ func main() {
 		log.Fatal(err)
 	}
 
-	s := &state{
-		config: &cfg,
+	db, err := sql.Open("postgres", cfg.DBUrl)
+	if err != nil {
+		log.Fatal(fmt.Errorf("unable to open connection to database at %s: %w", cfg.DBUrl, err))
+	}
+	dbQueries := database.New(db)
+
+	progState := &state{
+		db:  dbQueries,
+		cfg: &cfg,
 	}
 	cmds := commands{
 		commandsToHandlers: make(map[string]func(*state, command) error),
 	}
 	cmds.register("login", handlerLogin)
+	cmds.register("register", handlerRegister)
 
 	if len(os.Args) < 2 {
 		log.Fatal("usage: gator <command> [args...]")
@@ -32,7 +45,7 @@ func main() {
 		name: os.Args[1],
 		args: os.Args[2:],
 	}
-	if err := cmds.run(s, cmd); err != nil {
+	if err := cmds.run(progState, cmd); err != nil {
 		log.Fatal(err)
 	}
 }
