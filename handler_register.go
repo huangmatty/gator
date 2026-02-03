@@ -16,15 +16,15 @@ func handlerRegister(s *state, cmd command) error {
 	}
 
 	name := cmd.args[0]
-	user, err := s.db.GetUser(context.Background(), name)
+	_, err := s.db.GetUser(context.Background(), name)
 	if err == nil {
-		return fmt.Errorf("username \"%s\" already exist", name)
+		return fmt.Errorf("username \"%s\" already exists", name)
 	}
 	if err != sql.ErrNoRows {
 		return fmt.Errorf("unable to create user: %w", err)
 	}
 
-	user, err = s.db.CreateUser(context.Background(), database.CreateUserParams{
+	user, err := s.db.CreateUser(context.Background(), database.CreateUserParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now(),
 		UpdatedAt: time.Now(),
