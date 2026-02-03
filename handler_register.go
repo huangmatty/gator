@@ -36,6 +36,8 @@ func handlerRegister(s *state, cmd command) error {
 	if err := s.cfg.SetUser(name); err != nil {
 		return fmt.Errorf("unable to set current user: %w", err)
 	}
-	fmt.Printf("id: %v, created: %v, updated %v, name: %v\n", user.ID, user.CreatedAt.UTC(), user.UpdatedAt.UTC(), user.Name)
+	fmt.Printf("ID:      %v\n", user.ID)
+	fmt.Printf("Name:    %v\n", user.Name)
+	fmt.Printf("Created: %v\n", user.CreatedAt.UTC())
 	return nil
 }
