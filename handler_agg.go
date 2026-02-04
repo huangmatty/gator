@@ -13,7 +13,7 @@ func handlerAgg(s *state, cmd command) error {
 	defer cancel()
 	feed, err := fetchFeed(ctx, feedURL)
 	if err != nil {
-		return fmt.Errorf("unable to fetch feed: %w", err)
+		return fmt.Errorf("failed to fetch feed: %w", err)
 	}
 	fmt.Printf("%+v\n", feed)
 	return nil

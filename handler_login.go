@@ -8,21 +8,23 @@ import (
 
 func handlerLogin(s *state, cmd command) error {
 	if len(cmd.args) < 1 {
-		return fmt.Errorf("usage: %s <name>", cmd.name)
+		fmt.Printf("usage: %s <name>\n", cmd.name)
+		return nil
 	}
 
 	name := cmd.args[0]
 	_, err := s.db.GetUser(context.Background(), name)
 	if err == sql.ErrNoRows {
-		return fmt.Errorf("username \"%s\" doesn't exit", name)
+		fmt.Printf("username \"%s\" doesn't exit\n", name)
+		return nil
 	}
 	if err != nil {
-		return fmt.Errorf("unable to login: %w", err)
+		return fmt.Errorf("failed to log in: %w", err)
 	}
 
 	if err := s.cfg.SetUser(name); err != nil {
-		return fmt.Errorf("unable to set current user: %w", err)
+		return fmt.Errorf("failed to set current user: %w", err)
 	}
-	fmt.Printf("successfully set user \"%s\"\n", name)
+	fmt.Printf("successfully set current user as \"%s\"\n", name)
 	return nil
 }

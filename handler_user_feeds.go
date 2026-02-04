@@ -10,7 +10,7 @@ import (
 func handlerListUserFeeds(s *state, cmd command, user database.User) error {
 	feedFollows, err := s.db.GetFeedFollowsForUser(context.Background(), user.ID)
 	if err != nil {
-		return fmt.Errorf("unable to retrieve user's feeds: %w", err)
+		return fmt.Errorf("failed to retrieve user's feeds: %w", err)
 	}
 	if len(feedFollows) < 1 {
 		fmt.Printf("no feeds followed by %s\n", user.Name)

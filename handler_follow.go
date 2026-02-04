@@ -10,16 +10,18 @@ import (
 
 func handlerFollow(s *state, cmd command, user database.User) error {
 	if len(cmd.args) != 1 {
-		return fmt.Errorf("usage: %s <feed_url>", cmd.name)
+		fmt.Printf("usage: %s <feed_url>\n", cmd.name)
+		return nil
 	}
 
 	url := cmd.args[0]
 	feed, err := s.db.GetFeedByUrl(context.Background(), url)
 	if err == sql.ErrNoRows {
-		return fmt.Errorf("feed doesn't exist; use command addfeed to add feed: %w", err)
+		fmt.Println("feed doesn't exist; use command addfeed <feed_url> to add feed")
+		return nil
 	}
 	if err != nil {
-		return fmt.Errorf("unable to follow feed: %w", err)
+		return fmt.Errorf("failed to follow feed: %w", err)
 	}
 
 	feedFollow, err := s.db.CreateFeedFollow(context.Background(), database.CreateFeedFollowParams{
@@ -27,7 +29,7 @@ func handlerFollow(s *state, cmd command, user database.User) error {
 		FeedID: feed.ID,
 	})
 	if err != nil {
-		return fmt.Errorf("unable to follow feed: %w", err)
+		return fmt.Errorf("failed to follow feed: %w", err)
 	}
 	fmt.Println("New feed followed:")
 	fmt.Printf("ID:      %v\n", feedFollow.ID)

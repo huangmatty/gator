@@ -8,7 +8,7 @@ import (
 func handlerListFeeds(s *state, cmd command) error {
 	feeds, err := s.db.GetFeeds(context.Background())
 	if err != nil {
-		return fmt.Errorf("unable to retrieve feeds from database: %w", err)
+		return fmt.Errorf("failed to retrieve feeds from database: %w", err)
 	}
 	if len(feeds) < 1 {
 		fmt.Println("no feeds found")

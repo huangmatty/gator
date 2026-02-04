@@ -8,7 +8,7 @@ import (
 func handlerListUsers(s *state, cmd command) error {
 	users, err := s.db.GetUsers(context.Background())
 	if err != nil {
-		return fmt.Errorf("unable to retrieve users from database: %w", err)
+		return fmt.Errorf("failed to retrieve users from database: %w", err)
 	}
 	if len(users) < 1 {
 		fmt.Println("no users found")
