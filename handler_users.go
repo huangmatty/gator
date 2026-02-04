@@ -11,6 +11,7 @@ func handlerListUsers(s *state, cmd command) error {
 		return fmt.Errorf("unable to retrieve users from database: %w", err)
 	}
 	if len(users) < 1 {
+		fmt.Println("no users found")
 		return nil
 	}
 	currentUser := s.cfg.CurrentUsername

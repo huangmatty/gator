@@ -4,10 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"time"
-
-	"github.com/google/uuid"
-	"github.com/huangmatty/gator/internal/database"
 )
 
 func handlerRegister(s *state, cmd command) error {
@@ -24,12 +20,7 @@ func handlerRegister(s *state, cmd command) error {
 		return fmt.Errorf("unable to create user: %w", err)
 	}
 
-	user, err := s.db.CreateUser(context.Background(), database.CreateUserParams{
-		ID:        uuid.New(),
-		CreatedAt: time.Now(),
-		UpdatedAt: time.Now(),
-		Name:      name,
-	})
+	user, err := s.db.CreateUser(context.Background(), name)
 	if err != nil {
 		return fmt.Errorf("unable to create user: %w", err)
 	}

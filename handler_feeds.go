@@ -15,7 +15,7 @@ func handlerListFeeds(s *state, cmd command) error {
 		return nil
 	}
 	for _, feed := range feeds {
-		user, err := s.db.GetUserByID(context.Background(), feed.UserID)
+		user, err := s.db.GetUserById(context.Background(), feed.UserID)
 		if err != nil {
 			continue
 		}
