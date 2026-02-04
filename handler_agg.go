@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-const feedURL = "https://www.wagslane.dev/index.xml"
-
 func handlerAgg(s *state, cmd command) error {
 	if len(cmd.args) != 1 {
 		fmt.Printf("usage: %s <duration, e.g. 5s, 1m, 2h>\n", cmd.name)
